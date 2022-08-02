@@ -14,7 +14,7 @@ class TestsCommandLineInteractions(unittest.TestCase):
 
         self.assertIsNone(result.exception)
         self.assertEqual(result.exit_code, 0)
-        self.assertEqual(result.output, 'objection: ' + __version__ + '\n')
+        self.assertEqual(result.output, f'objection: {__version__}' + '\n')
 
     @mock.patch('objection.utils.agent.Agent.inject')
     @mock.patch('objection.console.cli.get_device_info')

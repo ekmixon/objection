@@ -15,7 +15,7 @@ def _string_is_true(s: str) -> bool:
         :return:
     """
 
-    return s.lower() in ('true', 'yes')
+    return s.lower() in {'true', 'yes'}
 
 
 def _should_dump_backtrace(args: list) -> bool:
@@ -262,7 +262,7 @@ def set_method_return_value(args: list = None) -> None:
 
     # check if we got an overload
     overload_filter = args[1].replace(' ', '') if len(args) == 3 else None
-    retval = True if _string_is_true(args[-1]) else False
+    retval = bool(_string_is_true(args[-1]))
 
     api = state_connection.get_api()
     api.android_hooking_set_method_return(class_name,

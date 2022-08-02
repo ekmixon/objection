@@ -78,7 +78,7 @@ def dump_all(args: list) -> None:
     api = state_connection.get_api()
     ranges = api.memory_list_ranges(access)
 
-    total_size = sum([x['size'] for x in ranges])
+    total_size = sum(x['size'] for x in ranges)
     click.secho('Will dump {0} {1} images, totalling {2}'.format(
         len(ranges), access, sizeof_fmt(total_size)), fg='green', dim=True)
 

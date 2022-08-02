@@ -64,10 +64,7 @@ class StateConnection(object):
         if t == self.TYPE_USB:
             return 'usb'
 
-        if t == self.TYPE_REMOTE:
-            return 'net'
-
-        return ''
+        return 'net' if t == self.TYPE_REMOTE else ''
 
     def get_api(self):
         """

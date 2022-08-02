@@ -55,15 +55,14 @@ class Agent(object):
                 click.secho('- [./incoming message] ' + '-' * 16, dim=True)
 
             # process the response
-            if message and 'payload' in message:
-                if len(message['payload']) > 0:
-                    if isinstance(message['payload'], dict):
-                        click.secho('(agent) ' + json.dumps(message['payload']))
-                    elif isinstance(message['payload'], str):
-                        click.secho('(agent) ' + message['payload'])
-                    else:
-                        click.secho('Dumping unknown agent message', fg='yellow')
-                        pprint(message['payload'])
+            if message and 'payload' in message and len(message['payload']) > 0:
+                if isinstance(message['payload'], dict):
+                    click.secho('(agent) ' + json.dumps(message['payload']))
+                elif isinstance(message['payload'], str):
+                    click.secho('(agent) ' + message['payload'])
+                else:
+                    click.secho('Dumping unknown agent message', fg='yellow')
+                    pprint(message['payload'])
 
         except Exception as e:
             click.secho('Failed to process an incoming message from agent: {0}'.format(e), fg='red', bold=True)
@@ -90,7 +89,7 @@ class Agent(object):
 
             # process the response
             if message:
-                click.secho('(session detach message) ' + message, fg='red')
+                click.secho(f'(session detach message) {message}', fg='red')
 
             # Frida 12.3 crash reporting
             # https://www.nowsecure.com/blog/2019/02/07/frida-12-3-debuts-new-crash-reporting-feature/
@@ -115,15 +114,11 @@ class Agent(object):
 
             if state_connection.device_serial:
                 device = frida.get_device(state_connection.device_serial)
-                click.secho('Using USB device `{n}`'.format(n=device.name), bold=True)
-
-                return device
-
             else:
                 device = frida.get_usb_device(5)
-                click.secho('Using USB device `{n}`'.format(n=device.name), bold=True)
+            click.secho('Using USB device `{n}`'.format(n=device.name), bold=True)
 
-                return device
+            return device
 
         if state_connection.get_comms_type() == state_connection.TYPE_REMOTE:
             device = frida.get_device_manager().add_remote_device('{host}:{port}'.format(

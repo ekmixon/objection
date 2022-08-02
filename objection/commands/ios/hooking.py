@@ -55,10 +55,7 @@ def _should_ignore_native_classes(args: list) -> bool:
         :return:
     """
 
-    if len(args) <= 0:
-        return False
-
-    return '--ignore-native' in args
+    return False if len(args) <= 0 else '--ignore-native' in args
 
 
 def _should_include_parent_methods(args: list) -> bool:
@@ -70,10 +67,7 @@ def _should_include_parent_methods(args: list) -> bool:
         :return:
     """
 
-    if len(args) <= 0:
-        return False
-
-    return '--include-parents' in args
+    return False if len(args) <= 0 else '--include-parents' in args
 
 
 def _class_is_prefixed_with_native(class_name: str) -> bool:
@@ -85,12 +79,7 @@ def _class_is_prefixed_with_native(class_name: str) -> bool:
         :return:
     """
 
-    for prefix in native_prefixes:
-
-        if class_name.startswith(prefix):
-            return True
-
-    return False
+    return any(class_name.startswith(prefix) for prefix in native_prefixes)
 
 
 def _string_is_true(s: str) -> bool:
@@ -101,7 +90,7 @@ def _string_is_true(s: str) -> bool:
         :return:
     """
 
-    return s.lower() in ('true', 'yes')
+    return s.lower() in {'true', 'yes'}
 
 
 def _should_dump_backtrace(args: list) -> bool:
@@ -275,9 +264,9 @@ def search_class(args: list) -> None:
 
     api = state_connection.get_api()
     classes = api.ios_hooking_get_classes(search)
-    found_classes = 0
-
     if len(classes) > 0:
+
+        found_classes = 0
 
         # filter the classes for the search
         for classname in classes:
